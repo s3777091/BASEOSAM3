@@ -2,6 +2,7 @@
 #include "core.h"
 #include "mbox.h"
 #include "framebf.h"
+#include "game.h"
 
 uart_config config = {
     .data_bits = 8,
@@ -57,6 +58,7 @@ void main()
                 playVideo();
                 break;
             case '5':
+                playGame();
                 break;
             case '0':
                 clearScreen(COLORS.BLACK);

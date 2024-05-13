@@ -6,6 +6,7 @@
         "mbox.h": "c",
         "core.h": "c",
         "framebf.h": "c",
-        "font.h": "c"
+        "font.h": "c",
+        "game.h": "c"
     }
 }
