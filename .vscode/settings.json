@@ -4,6 +4,8 @@
         "colors.h": "c",
         "color.h": "c",
         "mbox.h": "c",
-        "core.h": "c"
+        "core.h": "c",
+        "framebf.h": "c",
+        "font.h": "c"
     }
 }
