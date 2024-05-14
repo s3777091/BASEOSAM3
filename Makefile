@@ -4,7 +4,7 @@ CFILES = $(wildcard ./src/*.c)
 OFILES = $(CFILES:./src/%.c=./build/%.o)
 GCCFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib
 
-all: clean kernel8.img run
+all: kernel8.img run
 
 
 ./build/boot.o: ./src/boot.S

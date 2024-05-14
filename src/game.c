@@ -11,14 +11,14 @@ void initializeGame()
 
     initializeMap();
     wait_ms(5000);
-    snake.length = 2;
-    snake.direction = 1; // Initial direction: right
+    snake.length = 3;
+    snake.direction = LEFT; // Initial direction: right
 
     // Place snake above the first brick
-    for (int j = 0; j < snake.length; j++)
+    for (int i = 0; i < snake.length; i++)
     {
-        snake.body[j].x = map_one.bricks[0].x + snake.length;
-        snake.body[j].y = map_one.bricks[0].y - 1;
+        snake.body[i].x = 16 + i;
+        snake.body[i].y = 12;
     }
 
 }
@@ -37,10 +37,8 @@ void drawFood()
 {
     for (int i = 0; i < MAX_APPLES; i++)
     {
-        if (map_one.apples[i].x >= 0 && map_one.apples[i].y >= 0)
-        {
-            drawRect(map_one.apples[i].x, map_one.apples[i].y, map_one.apples[i].x + CELL_SIZE - 1, map_one.apples[i].y + CELL_SIZE - 1, 0x4, 1);
-        }
+        // Convert to Circle for Food
+        drawRect(map_one.apples[i].x, map_one.apples[i].y, map_one.apples[i].x + CELL_SIZE, map_one.apples[i].y + CELL_SIZE, 0x4, 1);
     }
 }
 
@@ -53,44 +51,78 @@ void drawBricks()
 {
     for (int i = 0; i < MAX_BRICKS; i++)
     {
-        if (map_one.bricks[i].length > 0)
-        {
-            int x = map_one.bricks[i].x;
-            int y = map_one.bricks[i].y;
-            int length = map_one.bricks[i].length;
-
-            if (map_one.bricks[i].direction == 0) // Horizontal
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    drawRect((x + j) * CELL_SIZE, y * CELL_SIZE,
-                             (x + j) * CELL_SIZE + CELL_SIZE - 1,
-                             y * CELL_SIZE + CELL_SIZE - 1, 0x1, 1);
-                }
-            }
-            else // Vertical
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    drawRect(x * CELL_SIZE, (y + j) * CELL_SIZE,
-                             x * CELL_SIZE + CELL_SIZE - 1,
-                             (y + j) * CELL_SIZE + CELL_SIZE - 1, 0x1, 1);
-                }
-            }
-        }
+        struct Brick temp = map_one.bricks[i];
+        drawRect(temp.x * CELL_SIZE, temp.y * CELL_SIZE,
+                (temp.x + temp.w) * CELL_SIZE,
+                (temp.y + temp.h) * CELL_SIZE, 0x1, 1);
     }
 }
 
-void changeDirection(int newDirection)
+int isValidMove(int move)
 {
-    if (newDirection == 0 && snake.direction != 1)
-        snake.direction = 0;
-    if (newDirection == 1 && snake.direction != 0)
-        snake.direction = 1;
-    if (newDirection == 2 && snake.direction != 3)
-        snake.direction = 2;
-    if (newDirection == 3 && snake.direction != 2)
-        snake.direction = 3;
+    if (move == LEFT && snake.direction != RIGHT) {
+        snake.direction = LEFT;
+        for (int i = 0; i < MAX_BRICKS; i++)
+        {
+            if (snake.body[0].x == map_one.bricks[i].x + 1)
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+        
+    if (move == RIGHT && snake.direction != LEFT) {
+        snake.direction = RIGHT;
+        for (int i = 0; i < MAX_BRICKS; i++)
+        {
+            if (snake.body[0].x == map_one.bricks[i].x - 1)
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+        
+    if (move == UP && snake.direction != DOWN) {
+        snake.direction = UP;
+        for (int i = 0; i < MAX_BRICKS; i++)
+        {
+            if (snake.body[0].y == map_one.bricks[i].y + 1)
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+        
+    if (move == DOWN && snake.direction != UP) {
+        snake.direction = DOWN;
+        for (int i = 0; i < MAX_BRICKS; i++)
+        {
+            if (snake.body[0].y == map_one.bricks[i].y - 1)
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+        
+    return 0;
+}
+
+int getDirection(char dir) {
+    switch (dir)
+    {
+        case 'a':
+            return LEFT;
+        case 'd':
+            return RIGHT;
+        case 'w':
+            return UP;
+        case 's':
+            return DOWN;
+    }
 }
 
 void moveSnake()
@@ -103,16 +135,16 @@ void moveSnake()
 
     switch (snake.direction)
     {
-        case 0: // Left
+        case LEFT:
             snake.body[0].x--;
             break;
-        case 1: // Right
+        case RIGHT:
             snake.body[0].x++;
             break;
-        case 2: // Up
+        case UP:
             snake.body[0].y--;
             break;
-        case 3: // Down
+        case DOWN:
             snake.body[0].y++;
             break;
     }
@@ -120,9 +152,31 @@ void moveSnake()
 
 void applyGravity()
 {
-    if (!snake.onBrick)
-    {
-        uart_puts("Game Over\n");
+    while (1) {
+        // Fall out of map
+        if (snake.body[0].y > 32) {
+            uart_puts("Game Over\n");
+            return;
+        }
+
+        for (int i = 0; i < snake.length; i++)
+        {
+            for (int j = 0; j < MAX_BRICKS; j++) 
+            {
+                if (map_one.bricks[j].x <= snake.body[i].x && snake.body[i].x <= map_one.bricks[j].x + map_one.bricks[j].w - 1)
+                {
+                    if (snake.body[i].y == map_one.bricks[j].y - 1)
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < snake.length; i++)
+        {
+            snake.body[i].y += 1;
+        }
     }
 }
 
@@ -152,40 +206,35 @@ void checkOnBrick()
     snake.onBrick = 0; 
     for (int i = 0; i < MAX_BRICKS; i++)
     {
-        if (map_one.bricks[i].length > 0)
-        {
-            int x = map_one.bricks[i].x;
-            int y = map_one.bricks[i].y;
-            int length = map_one.bricks[i].length;
+        int x = map_one.bricks[i].x;
+        int y = map_one.bricks[i].y;
+        // int length = map_one.bricks[i].length;
 
-            // Horizontal brick
-            if (map_one.bricks[i].direction == 0)
-            {
-                if (snake.body[0].y == y - 1)
-                {
-                    if ((snake.body[0].x + snake.length) - 1 < x || (x + length) < snake.body[0].x)
-                    {
-                        uart_puts("out brick\n");
-                    }
-                    else
-                    {
-                        uart_puts("on brick\n");
-                        snake.onBrick = 1;
-                        break;
-                    }
-                }
-            }
-            // Vertical brick
-            else
-            {
-                
-            }
-        }
+        // // Horizontal brick
+        // if (map_one.bricks[i].direction == 0)
+        // {
+        //     if (snake.body[0].y == y - 1)
+        //     {
+        //         if ((snake.body[0].x + snake.length) - 1 < x || (x + length) < snake.body[0].x)
+        //         {
+        //             uart_puts("out brick\n");
+        //         }
+        //         else
+        //         {
+        //             uart_puts("on brick\n");
+        //             snake.onBrick = 1;
+        //             break;
+        //         }
+        //     }
+        // }
+        // // Vertical brick
+        // else
+        // {
+            
+        // }
+        
     }
 }
-
-
-
 
 void playGame()
 {
@@ -195,15 +244,12 @@ void playGame()
     while (1)
     {
         char c = uart_getc();
-        switch (c)
-        {
-            case 'w': changeDirection(2); break;
-            case 's': changeDirection(3); break;
-            case 'a': changeDirection(0); break;
-            case 'd': changeDirection(1); break;
+        int direction = getDirection(c);
+        
+        if (isValidMove(direction)) {
+            moveSnake();
         }
-
-        moveSnake();
+        applyGravity();
         checkCollision();
         checkOnBrick();
 
@@ -212,5 +258,6 @@ void playGame()
     
         drawBricks();
         drawSnake();
+        drawFood();
     }
 }

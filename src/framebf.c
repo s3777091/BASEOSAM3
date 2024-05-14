@@ -3,10 +3,8 @@
 #include "uart.h"
 #include "font.h"
 #include "core.h"
+#include "framebf.h"
 #include "./data/videodata.h"
-
-#define SCR_WIDTH 1024
-#define SCR_HEIGHT 768
 
 //Use RGBA32 (32 bits for each pixel)
 #define COLOR_DEPTH 32

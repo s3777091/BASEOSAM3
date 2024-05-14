@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.templ": "templ",
         "uart.h": "c",
         "colors.h": "c",
         "color.h": "c",
@@ -7,6 +8,7 @@
         "core.h": "c",
         "framebf.h": "c",
         "font.h": "c",
-        "game.h": "c"
+        "game.h": "c",
+        "map.h": "c"
     }
 }

@@ -3,15 +3,16 @@
 
 #define MAX_BRICKS 10
 #define MAX_APPLES 5
-#define CELL_SIZE 20
+#define CELL_SIZE 32
 // Structures for map elements
 struct Brick
 {
-    int length;
     int x;
     int y;
-    int direction;  // 0: horizontal, 1: vertical
+    int w; // Width
+    int h; // Height
 };
+
 
 struct Apple
 {
