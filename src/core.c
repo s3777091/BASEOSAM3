@@ -1,4 +1,4 @@
-#include "core.h"
+#include "./lib/core.h"
 
 
 void displayMenu()

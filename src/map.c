@@ -1,24 +1,31 @@
-#include "map.h"
+#include "./lib/map.h"
 
-struct Map map_one;
+struct Map map;
 
-void initializeMap()
-{
-    // Playarea walls
-    map_one.bricks[0] = (struct Brick){0, 0, 31, 1};
-    map_one.bricks[1] = (struct Brick){0, 23, 32, 1};
-    map_one.bricks[2] = (struct Brick){0, 0, 1, 23};
-    map_one.bricks[3] = (struct Brick){31, 0, 1, 23};
+// x, y, w, h
+struct Map all_maps[4] = {
+    {
+        {{7, 13, 10, 1}, {12, 10, 1, 3}}, // Bricks
+        {{10, 11}}, // Apples
+        {16, 12} // Teleport
+    },
+    {
+        {{7, 13, 10, 1}}, // Bricks
+        {{10, 10}, {10, 20}}, // Apples
+        {8, 12} // Teleport
+    }
 
-    map_one.bricks[4] = (struct Brick){16, 13, 3, 1};
+};
 
+void initializeMap(int level) {
+    int idx = level % MAX_MAPS;  // Wrap around the map index
+    struct Map *src = &all_maps[idx];
 
-    // Define apples (on bricks)
-    map_one.apples[0] = (struct Apple){10 * CELL_SIZE, 10 * CELL_SIZE};
-    map_one.apples[1] = (struct Apple){20 * CELL_SIZE, 20 * CELL_SIZE};
-
-    // Define teleport (end of first brick)
-    // map_one.teleport = (struct Teleport){
-    //     (map_one.bricks[0].x + map_one.bricks[0].length - 1) * CELL_SIZE,  (map_one.bricks[0].y - 1) * CELL_SIZE
-    // };
+    for (int i = 0; i < MAX_BRICKS; i++) {
+        map.bricks[i] = src->bricks[i];
+    }
+    for (int i = 0; i < MAX_APPLES; i++) {
+        map.apples[i] = src->apples[i];
+    }
+    map.teleport = src->teleport;
 }

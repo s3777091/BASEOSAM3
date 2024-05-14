@@ -1,4 +1,4 @@
-#include "uart.h"
+#include "./lib/uart.h"
 
 uart_type uart_configure(uart_config *config)
 {

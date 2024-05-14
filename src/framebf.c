@@ -1,16 +1,6 @@
 // ----------------------------------- framebf.c -------------------------------------
-#include "mbox.h"
-#include "uart.h"
-#include "font.h"
-#include "core.h"
-#include "framebf.h"
-#include "./data/videodata.h"
+#include "./lib/framebf.h"
 
-//Use RGBA32 (32 bits for each pixel)
-#define COLOR_DEPTH 32
-
-//Pixel Order: BGR in memory order (little endian --> RGB in byte order)
-#define PIXEL_ORDER 0
 
 //Screen info
 unsigned int width, height, pitch;
@@ -432,36 +422,3 @@ void drawOnScreen()
 	drawCircle(0, 0, 30, 0x69, 1);
 	
 }
-
-void playVideo()
-{
-    uart_puts("Playing video\n");
-    uart_puts("Press Enter to stop\n");
-
-    int i = 0;
-    char c = 0;
-    int videoPlaying = 1;
-
-    while (videoPlaying)
-    {
-        if (!(UART0_FR & UART0_FR_RXFE))
-        {
-            c = uart_getc();
-            if (c == '\n')
-            {
-                videoPlaying = 0;
-            }
-        }
-
-        // Loop through video frames
-        if (i > 7)
-            i = 0;
-
-        drawImage(video_frames[i], 0, 0, 615, 480);
-        wait_ms(210000);
-        i++;
-    }
-
-    uart_puts("\nVideo stopped ■");
-}
-

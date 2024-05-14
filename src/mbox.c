@@ -1,4 +1,4 @@
-#include "mbox.h"
+#include "./lib/mbox.h"
 
 /* Mailbox Data Buffer (each element is 32-bit)*/
 /*

@@ -1,5 +1,12 @@
-// ----------------------------------- framebf.h -------------------------------------
+#include "mbox.h"
+#include "uart.h"
+#include "core.h"
+#include "font.h"
 
+//Use RGBA32 (32 bits for each pixel)
+#define COLOR_DEPTH 32
+//Pixel Order: BGR in memory order (little endian --> RGB in byte order)
+#define PIXEL_ORDER 0
 #define SCR_WIDTH 1024
 #define SCR_HEIGHT 768
 
@@ -18,6 +25,3 @@ void drawImage(unsigned int image[], int x, int y, int w, int h);
 void drawChar(unsigned char ch, int x, int y, unsigned char attr);
 void drawString(int x, int y, char *s, unsigned char attr);
 void drawOnScreen();
-
-
-void playVideo();

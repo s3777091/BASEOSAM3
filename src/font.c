@@ -1,3 +1,5 @@
+#include "./lib/font.h"
+
 unsigned int vgapal[] = {
     0x000000,
     0x0000AA,
@@ -17,15 +19,8 @@ unsigned int vgapal[] = {
     0xFFFFFF
 };
 
-enum {
-    FONT_WIDTH     = 8,
-    FONT_HEIGHT    = 8,
-    FONT_BPG       = 8,  // Bytes per glyph
-    FONT_BPL       = 1,  // Bytes per line
-    FONT_NUMGLYPHS = 224
-};
-
 unsigned char font[FONT_NUMGLYPHS][FONT_BPG] = {
+    
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0000 (nul)
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0001
     { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0002

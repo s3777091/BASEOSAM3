@@ -1,6 +1,7 @@
 #include "framebf.h"
 #include "uart.h"
 #include "map.h"
+#include "core.h"
 
 // Definitions
 #define MAX_SNAKE_LENGTH 100
@@ -41,3 +42,5 @@ int getDirection(char dir);
 int isValidMove(int newDirection);
 void checkCollision();
 void applyGravity();
+
+void checkTeleport();
