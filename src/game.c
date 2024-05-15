@@ -2,66 +2,18 @@
 
 struct Snake snake;
 struct Teleport teleport;
-
 int currentMap = 0; // Track current map index
 
-void initializeGame()
-{
+void initializeGame() {
     initializeMap(currentMap);
     wait_ms(5000);
     snake.length = 3;
     snake.direction = LEFT; // Initial direction: left
     snake.onBrick = 0;
 
-    for (int i = 0; i < snake.length; i++)
-    {
+    for (int i = 0; i < snake.length; i++) {
         snake.body[i].x = map.start.x - i;
         snake.body[i].y = map.start.y;
-    }
-}
-
-void drawSnake()
-{
-    for (int i = 0; i < snake.length; i++)
-    {
-        int color = (i == 0) ? 0x6 : 0x2; // Assuming 0x6 represents pink
-        drawRect(snake.body[i].x * CELL_SIZE, snake.body[i].y * CELL_SIZE,
-                 (snake.body[i].x * CELL_SIZE) + CELL_SIZE - 1,
-                 (snake.body[i].y * CELL_SIZE) + CELL_SIZE - 1, color, 1);
-    }
-}
-
-void drawFood()
-{
-    for (int i = 0; i < MAX_APPLES; i++)
-    {
-        if (map.apples[i].x != -1 && map.apples[i].y != -1)
-        {
-            int appleX = map.apples[i].x * CELL_SIZE;
-            int appleY = map.apples[i].y * CELL_SIZE;
-
-            drawRect(appleX, appleY, appleX + CELL_SIZE, appleY + CELL_SIZE, 0x4, 1);
-        }
-    }
-}
-
-void drawTeleport()
-{
-    // Ensure the teleport is drawn using global map teleport coordinates
-    drawRect(map.teleport.x * CELL_SIZE,
-             map.teleport.y * CELL_SIZE,
-             (map.teleport.x + 1) * CELL_SIZE - 1,
-             (map.teleport.y + 1) * CELL_SIZE - 1, 0x3, 1);
-}
-
-void drawBricks()
-{
-    for (int i = 0; i < MAX_BRICKS; i++)
-    {
-        struct Brick temp = map.bricks[i];
-        drawRect(temp.x * CELL_SIZE, temp.y * CELL_SIZE,
-                 (temp.x + temp.w) * CELL_SIZE,
-                 (temp.y + temp.h) * CELL_SIZE, 0x1, 1);
     }
 }
 
@@ -89,7 +41,7 @@ int isValidMove(int move) {
     int isValid = 1;
     snake.onBrick = 0;
 
-    // Combine brick and apple checks into one loop
+    // Check for collisions with bricks, rocks, and the snake itself
     for (int i = 0; i < MAX_BRICKS; i++) {
         int brickLeft = map.bricks[i].x;
         int brickRight = map.bricks[i].x + map.bricks[i].w - 1;
@@ -115,6 +67,67 @@ int isValidMove(int move) {
         }
     }
 
+    for (int i = 0; i < MAX_ROCKS; i++) {
+        if (newX == map.rocks[i].x && newY == map.rocks[i].y) {
+            // Move the rock
+            int rockNewX = map.rocks[i].x;
+            int rockNewY = map.rocks[i].y;
+
+            switch (move) {
+            case LEFT:
+                rockNewX--;
+                break;
+            case RIGHT:
+                rockNewX++;
+                break;
+            case UP:
+                rockNewY--;
+                break;
+            case DOWN:
+                rockNewY++;
+                break;
+            }
+
+            // Check if the new rock position is valid
+            int rockValid = 1;
+            for (int j = 0; j < MAX_BRICKS; j++) {
+                int brickLeft = map.bricks[j].x;
+                int brickRight = map.bricks[j].x + map.bricks[j].w - 1;
+                int brickTop = map.bricks[j].y;
+                int brickBottom = map.bricks[j].y + map.bricks[j].h - 1;
+
+                if (rockNewX >= brickLeft && rockNewX <= brickRight &&
+                    rockNewY >= brickTop && rockNewY <= brickBottom) {
+                    rockValid = 0;  // Rock cannot be moved to a position inside a brick
+                    break;
+                }
+            }
+
+            // Check if the new rock position collides with other rocks
+            for (int j = 0; j < MAX_ROCKS; j++) {
+                if (rockNewX == map.rocks[j].x && rockNewY == map.rocks[j].y) {
+                    rockValid = 0;  // Rock cannot be moved to a position occupied by another rock
+                    break;
+                }
+            }
+
+            // Check if the new rock position collides with an apple
+            for (int j = 0; j < MAX_APPLES; j++) {
+                if (rockNewX == map.apples[j].x && rockNewY == map.apples[j].y) {
+                    rockValid = 0;
+                    break;
+                }
+            }
+
+            if (rockValid) {
+                map.rocks[i].x = rockNewX;
+                map.rocks[i].y = rockNewY;
+            } else {
+                isValid = 0;  // Snake move is invalid if the rock cannot be moved
+            }
+        }
+    }
+
     if (isValid) {
         snake.direction = move;
     }
@@ -123,10 +136,8 @@ int isValidMove(int move) {
 }
 
 
-int getDirection(char dir)
-{
-    switch (dir)
-    {
+int getDirection(char dir) {
+    switch (dir) {
     case 'a':
         return LEFT;
     case 'd':
@@ -140,16 +151,13 @@ int getDirection(char dir)
     return 0;
 }
 
-void moveSnake()
-{
+void moveSnake() {
     // Move the snake in the current direction
-    for (int i = snake.length - 1; i > 0; i--)
-    {
+    for (int i = snake.length - 1; i > 0; i--) {
         snake.body[i] = snake.body[i - 1];
     }
 
-    switch (snake.direction)
-    {
+    switch (snake.direction) {
     case LEFT:
         snake.body[0].x--;
         break;
@@ -166,43 +174,48 @@ void moveSnake()
 }
 
 void applyGravity() {
-    int falling = 1;
-
-    while (falling) {
-        if (snake.body[0].y > 32) {
+    while (1) {
+        if (snake.body[0].y > BOUND_Y) {
             uart_puts("Game Over\n");
             return;
         }
 
-        int isAboveBrickOrApple = 0;
+        int isAbove = 0;
 
         for (int i = 0; i < snake.length; i++) {
+            int x = snake.body[i].x;
+            int y = snake.body[i].y + 1; // Check the position below the snake segment
+
+            // Check for bricks, apples, or rocks below the snake
             for (int j = 0; j < MAX_BRICKS; j++) {
-                if (map.bricks[j].x <= snake.body[i].x && snake.body[i].x <= map.bricks[j].x + map.bricks[j].w - 1 &&
-                    snake.body[i].y + 1 == map.bricks[j].y) {
-                    isAboveBrickOrApple = 1;
+                if (x >= map.bricks[j].x && x <= map.bricks[j].x + map.bricks[j].w - 1 &&
+                    y == map.bricks[j].y) {
+                    isAbove = 1;
                     break;
                 }
             }
+            if (isAbove) break;
 
-            if (!isAboveBrickOrApple) {
-                for (int j = 0; j < MAX_APPLES; j++) {
-                    if (map.apples[j].x == snake.body[i].x && map.apples[j].y == snake.body[i].y + 1) {
-                        isAboveBrickOrApple = 1;
-                        break;
-                    }
+            for (int j = 0; j < MAX_APPLES; j++) {
+                if (x == map.apples[j].x && y == map.apples[j].y) {
+                    isAbove = 1;
+                    break;
                 }
             }
+            if (isAbove) break;
 
-            if (isAboveBrickOrApple) {
-                falling = 0;
-                break;
+            for (int j = 0; j < MAX_ROCKS; j++) {
+                if (x == map.rocks[j].x && y == map.rocks[j].y) {
+                    isAbove = 1;
+                    break;
+                }
             }
+            if (isAbove) break;
         }
 
-        if (!falling)
-            break;
+        if (isAbove) break; // Stop falling if snake is above any obstacle
 
+        // Move the snake down by 1 cell
         for (int i = 0; i < snake.length; i++) {
             snake.body[i].y += 1;
         }
@@ -214,8 +227,10 @@ void applyGravity() {
         drawBricks();
         drawTeleport();
         drawFood();
+        drawRocks();
     }
 }
+
 
 void checkCollision() {
     for (int i = 0; i < MAX_APPLES; i++) {
@@ -224,28 +239,63 @@ void checkCollision() {
                 int tail_index = snake.length;
                 int last_x = snake.body[tail_index - 1].x;
                 int last_y = snake.body[tail_index - 1].y;
-                int second_last_x = snake.body[tail_index - 2].x;
-                int second_last_y = snake.body[tail_index - 2].y;
 
-                if (last_x == second_last_x) {
-                    if (last_y > second_last_y) {
-                        snake.body[tail_index].y = last_y + 1;
-                        snake.body[tail_index].x = last_x;
-                    } else {
-                        snake.body[tail_index].y = last_y - 1;
-                        snake.body[tail_index].x = last_x;
+                int new_tail_x, new_tail_y;
+                int found_valid_position = 0;
+
+                // Check all four directions around the last segment
+                int possible_positions[4][2] = {
+                    {last_x + 1, last_y},
+                    {last_x - 1, last_y},
+                    {last_x, last_y + 1},
+                    {last_x, last_y - 1}
+                };
+
+                for (int j = 0; j < 4; j++) {
+                    new_tail_x = possible_positions[j][0];
+                    new_tail_y = possible_positions[j][1];
+
+                    // Check if the new position is within the bounds
+                    if (new_tail_x < 0 || new_tail_x >= BOUND_X || new_tail_y < 0 || new_tail_y >= BOUND_Y) {
+                        continue;
                     }
-                } else if (last_y == second_last_y) {
-                    if (last_x > second_last_x) {
-                        snake.body[tail_index].x = last_x + 1;
-                        snake.body[tail_index].y = last_y;
-                    } else {
-                        snake.body[tail_index].x = last_x - 1;
-                        snake.body[tail_index].y = last_y;
+
+                    // Check if the new position collides with a brick or rock
+                    int is_valid = 1;
+
+                    for (int k = 0; k < MAX_BRICKS; k++) {
+                        if (new_tail_x >= map.bricks[k].x && new_tail_x <= map.bricks[k].x + map.bricks[k].w - 1 &&
+                            new_tail_y >= map.bricks[k].y && new_tail_y <= map.bricks[k].y + map.bricks[k].h - 1) {
+                            is_valid = 0;
+                            break;
+                        }
+                    }
+                    if (!is_valid) continue;
+
+                    for (int k = 0; k < MAX_ROCKS; k++) {
+                        if (new_tail_x == map.rocks[k].x && new_tail_y == map.rocks[k].y) {
+                            is_valid = 0;
+                            break;
+                        }
+                    }
+
+                    if (is_valid) {
+                        found_valid_position = 1;
+                        break;
                     }
                 }
 
-                snake.length++;  // Increase snake length after updating position
+                if (!found_valid_position) {
+                    uart_puts("Game Over: No valid position for the new tail segment.\n");
+                    return;
+                }
+
+                // Set the new tail position
+                snake.body[tail_index].x = new_tail_x;
+                snake.body[tail_index].y = new_tail_y;
+
+                // Increase snake length after updating position
+                snake.length++;
             }
             map.apples[i].x = -1;  // Remove apple
             map.apples[i].y = -1;  // Remove apple
@@ -268,18 +318,17 @@ void checkCollision() {
     }
 }
 
-void playGame()
-{
+
+
+void playGame() {
     initializeGame();
     wait_ms(5000);
 
-    while (1)
-    {
+    while (1) {
         char c = uart_getc();
         int direction = getDirection(c);
 
-        if (isValidMove(direction))
-        {
+        if (isValidMove(direction)) {
             moveSnake();
         }
         checkCollision();
@@ -291,5 +340,6 @@ void playGame()
         drawBricks();
         drawSnake();
         drawFood();
+        drawRocks();
     }
 }

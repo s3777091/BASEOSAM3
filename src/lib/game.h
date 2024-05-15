@@ -1,3 +1,6 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include "framebf.h"
 #include "uart.h"
 #include "map.h"
@@ -31,14 +34,14 @@ struct Snake
     int onBrick;    // Flag to check if the snake is on a brick
 };
 
+extern struct Snake snake; // Declare snake as an external variable
+
 void playGame();
-void drawFood();
-void drawSnake();
-void drawTeleport();
-void drawBricks();
 void initializeGame();
 void moveSnake();
 int getDirection(char dir);
 int isValidMove(int newDirection);
 void checkCollision();
 void applyGravity();
+
+#endif // GAME_H
