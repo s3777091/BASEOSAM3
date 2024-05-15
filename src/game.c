@@ -15,7 +15,7 @@ void initializeGame()
     // Place snake above the first brick
     for (int i = 0; i < snake.length; i++)
     {
-        snake.body[i].x = map.bricks[0].x + snake.length;
+        snake.body[i].x = map.bricks[0].x;
         snake.body[i].y = map.bricks[0].y - 1;
     }
 }

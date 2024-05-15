@@ -4,7 +4,7 @@
 #define MAX_BRICKS 10
 #define MAX_APPLES 5
 #define CELL_SIZE 32
-#define MAX_MAPS 4
+#define MAX_MAPS 10
 
 
 struct Brick {
