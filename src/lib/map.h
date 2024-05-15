@@ -6,6 +6,9 @@
 #define CELL_SIZE 32
 #define MAX_MAPS 10
 
+struct Start {
+    int x, y;
+};
 
 struct Brick {
     int x, y, w, h;
@@ -23,6 +26,7 @@ struct Map {
     struct Brick bricks[MAX_BRICKS];
     struct Apple apples[MAX_APPLES];
     struct Teleport teleport;
+    struct Start start;
 };
 
 

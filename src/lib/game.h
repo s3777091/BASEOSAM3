@@ -4,7 +4,7 @@
 #include "core.h"
 
 // Definitions
-#define MAX_SNAKE_LENGTH 100
+#define MAX_SNAKE_LENGTH 10
 
 #define SCR_WIDTH 1024
 #define SCR_HEIGHT 768
@@ -42,5 +42,3 @@ int getDirection(char dir);
 int isValidMove(int newDirection);
 void checkCollision();
 void applyGravity();
-
-void checkTeleport();
