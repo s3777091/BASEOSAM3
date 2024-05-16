@@ -46,7 +46,7 @@ void drawSnake();
 void drawTeleport();
 void drawBricks();
 void drawRocks();
-
+void drawBackground(unsigned int *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw);
 void MapReload();
 
 #endif // MAP_H

@@ -1,22 +1,8 @@
 #include "./lib/game.h"
-#include "./lib/background.h"
 
 struct Snake snake;
 struct Teleport teleport;
 int currentMap = 0; // Track current map index
-
-void printBackground(unsigned long *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw)
-{
-    uint32_t x1 = char_x;
-    uint32_t y1 = char_y;
-    uint32_t x2 = char_x + widthDraw;
-    uint32_t y2 = char_y + heightDraw;
-
-    for (int y = y1; y < y2; y++)
-        for (int x = x1; x < x2; x++, img++)
-            drawPixelARGB32(x, y, *img);
-}
-
 
 void initializeGame() {
     initializeMap(currentMap);
@@ -346,11 +332,6 @@ void playGame() {
         checkCollision();
         applyGravity();
 
-        printBackground(backgroundIMG, 0, 0, 1024, 768);
-        drawTeleport();
-        drawBricks();
-        drawSnake();
-        drawFood();
-        drawRocks();
+        MapReload();
     }
 }

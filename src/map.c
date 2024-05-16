@@ -1,4 +1,6 @@
 #include "./lib/map.h"
+#include "./lib/image.h"
+#include "./lib/framebf.h"
 
 // Map structure
 struct Map map;
@@ -17,8 +19,8 @@ struct Map all_maps[MAX_MAPS] = {
         {{7,8,4,1}, {8,9,3,1}, {8,10,3,1}, {8,11,1,3}, {9,13,1,2},{10,14,3,1},{12,13,3,1}, {14,8,1,5},{12,8,2,1},{12,9,2,1},{12,10,2,1},{15,8,1,1}},
         {{10,12}},
         {{12,12}, {10,11}},
-        {{15,9}},
-        {{9,7},}
+        {15, 9},
+        {9, 7}
     },
     {
         {{7, 13, 10, 1}, {12, 10, 1, 3}},
@@ -155,4 +157,28 @@ void drawRocks()
             drawRect(rockX, rockY, rockX + CELL_SIZE, rockY + CELL_SIZE, 0x7, 1); // Assuming 0x7 represents a color for rocks
         }
     }
+}
+
+void drawBackground(unsigned int *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw)
+{
+    uint32_t x1 = char_x;
+    uint32_t y1 = char_y;
+    uint32_t x2 = char_x + widthDraw;
+    uint32_t y2 = char_y + heightDraw;
+
+    // for (int y = y1; y < y2; y++)
+    //     for (int x = x1; x < x2; x++, img++)
+    //         drawPixelARGB32(x, y, *img);
+    drawImage(img, x1, y1, x2, y2);
+}
+
+
+void MapReload() {
+    clearScreen(0x0);
+    drawBackground(backgroundIMG, 0, 0, 1024, 768);
+    drawTeleport();
+    drawBricks();
+    drawSnake();
+    drawFood();
+    drawRocks();
 }
