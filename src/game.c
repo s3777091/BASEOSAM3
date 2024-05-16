@@ -1,8 +1,22 @@
 #include "./lib/game.h"
+#include "./lib/background.h"
 
 struct Snake snake;
 struct Teleport teleport;
 int currentMap = 0; // Track current map index
+
+void printBackground(unsigned long *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw)
+{
+    uint32_t x1 = char_x;
+    uint32_t y1 = char_y;
+    uint32_t x2 = char_x + widthDraw;
+    uint32_t y2 = char_y + heightDraw;
+
+    for (int y = y1; y < y2; y++)
+        for (int x = x1; x < x2; x++, img++)
+            drawPixelARGB32(x, y, *img);
+}
+
 
 void initializeGame() {
     initializeMap(currentMap);
@@ -220,27 +234,16 @@ void applyGravity() {
             snake.body[i].y += 1;
         }
 
-        wait_ms(10000);
-
-        MapReload();
+        wait_ms(100);
+        clearScreen(0x0);
+        drawSnake();
+        drawBricks();
+        drawTeleport();
+        drawFood();
+        drawRocks();
     }
 }
 
-
-void advanceToNextMap() {
-    currentMap++;  // Advance to the next map
-    uart_puts("Go to next map\n");
-    if (currentMap >= MAX_MAPS) {
-        currentMap = 0;  // Loop back to the first map
-    }
-    initializeMap(currentMap);  // Initialize the new map
-
-    snake.length = 3;
-    for (int i = 0; i < snake.length; i++) {
-        snake.body[i].x = map.start.x - i;
-        snake.body[i].y = map.start.y;
-    }
-}
 
 void checkCollision() {
     for (int i = 0; i < MAX_APPLES; i++) {
@@ -313,26 +316,41 @@ void checkCollision() {
     }
 
     if (snake.body[0].x == map.teleport.x && snake.body[0].y == map.teleport.y) {
-        advanceToNextMap();
+        currentMap++;  // Advance to the next map
+        uart_puts("Go to next map\n");
+        if (currentMap >= MAX_MAPS) {
+            currentMap = 0;  // Loop back to the first map
+        }
+        initializeMap(currentMap);  // Initialize the new map
+
+        snake.length = 3;
+        for (int i = 0; i < snake.length; i++) {
+            snake.body[i].x = map.start.x - i;
+            snake.body[i].y = map.start.y;
+        }
     }
 }
-
 
 
 void playGame() {
     initializeGame();
     wait_ms(5000);
+    
 
     while (1) {
         char c = uart_getc();
         int direction = getDirection(c);
-
         if (isValidMove(direction)) {
             moveSnake();
         }
         checkCollision();
         applyGravity();
 
-        MapReload();
+        printBackground(backgroundIMG, 0, 0, 1024, 768);
+        drawTeleport();
+        drawBricks();
+        drawSnake();
+        drawFood();
+        drawRocks();
     }
 }

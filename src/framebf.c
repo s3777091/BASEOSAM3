@@ -269,6 +269,12 @@ void drawPixel(int x, int y, unsigned char attr)
 	*((unsigned int *)(fb + offs)) = vgapal[attr & 0x0f];
 }
 
+void drawPixelARGB32(int x, int y, unsigned int attr)
+{
+	int offs = (y * pitch) + (4 * x);
+	*((unsigned int *)(fb + offs)) = attr;
+}
+
 void drawRect(int x1, int y1, int x2, int y2, unsigned int attr, int fill)
 {
 	for (int y = y1; y <= y2; y++)
@@ -368,18 +374,6 @@ void drawImage(unsigned int image[], int x, int y, int w, int h)
 		y++;
 		x = 0;
 	}
-}
-
-void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height) {
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            int srcX = j % 32;
-            int srcY = i % 32;
-            int srcIndex = srcY * 32 + srcX; // Calculate the index for the 1D array
-            int offs = ((y + i) * pitch) + ((x + j) * 4); // Calculate offset
-            *((unsigned int *)(fb + offs)) = image[srcIndex]; // Set pixel color
-        }
-    }
 }
 
 void drawChar(unsigned char ch, int x, int y, unsigned char attr)
