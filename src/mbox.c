@@ -58,8 +58,6 @@ void mailbox_send(uint32_t msg, unsigned char channel)
 	MBOX1_WRITE = msg;
 }
 
-
-
 /**
  * Make a mailbox call. Returns 0 on failure, non-zero on success
  */

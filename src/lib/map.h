@@ -1,6 +1,5 @@
 #ifndef MAP_H
 #define MAP_H
-
 #define MAX_BRICKS 12
 #define MAX_APPLES 3
 #define MAX_ROCKS 3
@@ -47,5 +46,7 @@ void drawSnake();
 void drawTeleport();
 void drawBricks();
 void drawRocks();
+
+void MapReload();
 
 #endif // MAP_H

@@ -127,3 +127,13 @@ void drawRocks()
         }
     }
 }
+
+void MapReload() {
+    clearScreen(0x0);
+
+    drawTeleport();
+    drawBricks();
+    drawSnake();
+    drawFood();
+    drawRocks();
+}

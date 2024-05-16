@@ -4,7 +4,6 @@ struct Snake snake;
 struct Teleport teleport;
 int currentMap = 0; // Track current map index
 
-
 void initializeGame() {
     initializeMap(currentMap);
     wait_ms(5000);
@@ -221,17 +220,27 @@ void applyGravity() {
             snake.body[i].y += 1;
         }
 
-        wait_ms(100);
+        wait_ms(10000);
 
-        clearScreen(0x0);
-        drawSnake();
-        drawBricks();
-        drawTeleport();
-        drawFood();
-        drawRocks();
+        MapReload();
     }
 }
 
+
+void advanceToNextMap() {
+    currentMap++;  // Advance to the next map
+    uart_puts("Go to next map\n");
+    if (currentMap >= MAX_MAPS) {
+        currentMap = 0;  // Loop back to the first map
+    }
+    initializeMap(currentMap);  // Initialize the new map
+
+    snake.length = 3;
+    for (int i = 0; i < snake.length; i++) {
+        snake.body[i].x = map.start.x - i;
+        snake.body[i].y = map.start.y;
+    }
+}
 
 void checkCollision() {
     for (int i = 0; i < MAX_APPLES; i++) {
@@ -304,18 +313,7 @@ void checkCollision() {
     }
 
     if (snake.body[0].x == map.teleport.x && snake.body[0].y == map.teleport.y) {
-        currentMap++;  // Advance to the next map
-        uart_puts("Go to next map\n");
-        if (currentMap >= MAX_MAPS) {
-            currentMap = 0;  // Loop back to the first map
-        }
-        initializeMap(currentMap);  // Initialize the new map
-
-        snake.length = 3;
-        for (int i = 0; i < snake.length; i++) {
-            snake.body[i].x = map.start.x - i;
-            snake.body[i].y = map.start.y;
-        }
+        advanceToNextMap();
     }
 }
 
@@ -335,12 +333,6 @@ void playGame() {
         checkCollision();
         applyGravity();
 
-        clearScreen(0x0);
-
-        drawTeleport();
-        drawBricks();
-        drawSnake();
-        drawFood();
-        drawRocks();
+        MapReload();
     }
 }
