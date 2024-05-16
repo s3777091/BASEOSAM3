@@ -4,6 +4,7 @@ struct Snake snake;
 struct Teleport teleport;
 int currentMap = 0; // Track current map index
 
+
 void initializeGame() {
     initializeMap(currentMap);
     wait_ms(5000);

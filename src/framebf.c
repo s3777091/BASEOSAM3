@@ -370,6 +370,18 @@ void drawImage(unsigned int image[], int x, int y, int w, int h)
 	}
 }
 
+void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            int srcX = j % 32;
+            int srcY = i % 32;
+            int srcIndex = srcY * 32 + srcX; // Calculate the index for the 1D array
+            int offs = ((y + i) * pitch) + ((x + j) * 4); // Calculate offset
+            *((unsigned int *)(fb + offs)) = image[srcIndex]; // Set pixel color
+        }
+    }
+}
+
 void drawChar(unsigned char ch, int x, int y, unsigned char attr)
 {
 	unsigned char *glyph = (unsigned char *)&font + (ch < FONT_NUMGLYPHS ? ch : 0) * FONT_BPG;

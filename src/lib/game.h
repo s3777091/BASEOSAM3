@@ -43,5 +43,6 @@ int getDirection(char dir);
 int isValidMove(int newDirection);
 void checkCollision();
 void applyGravity();
+void drawRotatedImage(unsigned int image[32*32], int x, int y, int width, int height, int direction)
 
 #endif // GAME_H

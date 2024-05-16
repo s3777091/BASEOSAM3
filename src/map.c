@@ -1,4 +1,5 @@
 #include "./lib/map.h"
+#include "./lib/image.h"
 
 // Map structure
 struct Map map;
@@ -13,18 +14,18 @@ struct Map all_maps[MAX_MAPS] = {
         {12, 12}, // start
     },
     {
-        {{10, 13, 7, 1}, {17, 13, 1, 2}, {17, 14, 3, 1}, {19, 10, 1, 4}, {19, 10, 3, 1}, {16, 10, 1, 1}},
-        {{15, 7}},
-        {{12, 11}},
-        {20, 11},
-        {12, 11},
-    },
-    {
         {{10, 13, 2, 1}, {10, 14, 1, 2}, {10, 16, 5, 1}, {14, 14, 1, 2},  {13, 13, 2, 1}, {16, 13, 1, 1}}, // Bricks
         {{12, 15}},
         {{-1, -1}},
         {16, 14},
         {11, 11},
+    },
+    {
+        {{10, 13, 7, 1}, {17, 13, 1, 2}, {17, 14, 3, 1}, {19, 10, 1, 4}, {19, 10, 3, 1}, {16, 10, 1, 1}},
+        {{15, 7}},
+        {{12, 11}},
+        {20, 11},
+        {12, 11},
     },
     {
         {{10, 13, 5, 1}, {13, 9, 1, 3}, {18, 13, 3, 1}, {17, 11, 1, 1}, {16, 9, 2, 1}}, // Bricks
@@ -61,12 +62,23 @@ void drawSnake()
 {
     for (int i = 0; i < snake.length; i++)
     {
-        int color = (i == 0) ? 0x6 : 0x2; // Assuming 0x6 represents pink
-        drawRect(snake.body[i].x * CELL_SIZE, snake.body[i].y * CELL_SIZE,
-                 (snake.body[i].x * CELL_SIZE) + CELL_SIZE - 1,
-                 (snake.body[i].y * CELL_SIZE) + CELL_SIZE - 1, color, 1);
+        if (i == 0)
+        {
+            drawImageTiled(snakeHead, 
+                           snake.body[i].x * CELL_SIZE, 
+                           snake.body[i].y * CELL_SIZE, 
+                           CELL_SIZE, CELL_SIZE);
+        }
+        else
+        {
+            drawImageTiled(snakeBody, 
+                           snake.body[i].x * CELL_SIZE, 
+                           snake.body[i].y * CELL_SIZE, 
+                           CELL_SIZE, CELL_SIZE);
+        }
     }
 }
+
 
 // Function to draw the food (apples)
 void drawFood()
@@ -93,15 +105,12 @@ void drawTeleport()
              (map.teleport.y + 1) * CELL_SIZE - 1, 0x3, 1);
 }
 
-// Function to draw the bricks
-void drawBricks()
-{
-    for (int i = 0; i < MAX_BRICKS; i++)
-    {
+void drawBricks() {
+    for (int i = 0; i < MAX_BRICKS; i++) {
         struct Brick temp = map.bricks[i];
-        drawRect(temp.x * CELL_SIZE, temp.y * CELL_SIZE,
-                 (temp.x + temp.w) * CELL_SIZE,
-                 (temp.y + temp.h) * CELL_SIZE, 0x1, 1);
+        int brickWidth = temp.w * CELL_SIZE;
+        int brickHeight = temp.h * CELL_SIZE;
+        drawImageTiled(brickImage, temp.x * CELL_SIZE, temp.y * CELL_SIZE, brickWidth, brickHeight);
     }
 }
 
