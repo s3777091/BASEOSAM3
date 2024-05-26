@@ -417,14 +417,27 @@ void drawString(int x, int y, char *s, unsigned char attr)
 
 void drawOnScreen()
 {
-	int wid = 120;
-	drawString(SCR_WIDTH / 2 - 70, 200, "Team VIP PRO", 0xd);
-	drawLine(SCR_WIDTH / 2 - 80, 220, SCR_WIDTH / 2 + 80, 220, 0x0f);
+	int v_align = 120;
+	int h_align = 200;
 
-	drawString(SCR_WIDTH / 2 - wid, 250, "Coding:\tHuynh Dac Tan Dat", 0xa);
-	drawString(SCR_WIDTH / 2 - 50, 340, "$ s3777091 $", 0x05);
+	drawString(SCR_WIDTH / 2 - 70, h_align, "Team VIP PRO", 0xd);
+	drawLine(SCR_WIDTH / 2 - 80, h_align + 20, SCR_WIDTH / 2 + 80, 220, 0x0f);
+
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 50, "Authors:", 0xa);
+
+	// Authors
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 100, "Huynh Dac Tan Dat", 0xa);
+	drawString(SCR_WIDTH / 2 - v_align + 175, h_align + 100, "$ s3777091 $", 0x05);
+
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 150, "Duong Minh Nam", 0xa);
+	drawString(SCR_WIDTH / 2 - v_align  + 175, h_align + 150, "$ s3878202 $", 0x05);
+
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 200, "Lai Phuc Anh", 0xa);
+	drawString(SCR_WIDTH / 2 - v_align + 175, h_align + 200, "$ s3878693 $", 0x05);
+
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 250, "Phan Vinh Loc", 0xa);
+	drawString(SCR_WIDTH / 2 - v_align + 175, h_align + 250, "$ s3938497 $", 0x05);
 
 	drawCircle(1024, 700, 250, 0x09, 0);
 	drawCircle(0, 0, 30, 0x69, 1);
-	
 }
