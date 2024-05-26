@@ -1,6 +1,5 @@
 #include "./lib/main.h"
 
-
 void main()
 {
     uart_configure(&config);
@@ -11,7 +10,6 @@ void main()
 
     while (1)
     {
-
         uart_puts("\n\n");
         char c = uart_getc();
         uart_sendc(c);
@@ -29,6 +27,9 @@ void main()
                 break;
             case '5':
                 playGame();
+                clearScreen(COLORS.BLACK);
+                displayMenu();
+                drawOnScreen();
                 break;
             case '0':
                 clearScreen(COLORS.BLACK);
