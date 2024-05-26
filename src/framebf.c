@@ -423,7 +423,7 @@ void drawOnScreen()
 	drawString(SCR_WIDTH / 2 - 70, h_align, "Team VIP PRO", 0xd);
 	drawLine(SCR_WIDTH / 2 - 80, h_align + 20, SCR_WIDTH / 2 + 80, 220, 0x0f);
 
-	drawString(SCR_WIDTH / 2 - v_align, h_align + 50, "Authors:", 0xa);
+	drawString(SCR_WIDTH / 2 - v_align, h_align + 50, "Group 15 - Authors:", 0xa);
 
 	// Authors
 	drawString(SCR_WIDTH / 2 - v_align, h_align + 100, "Huynh Dac Tan Dat", 0xa);

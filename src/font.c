@@ -246,3 +246,42 @@ unsigned char font[FONT_NUMGLYPHS][FONT_BPG] = {
     { 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0},   // U+2590 (right half)
     { 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00},   // U+2580 (top half)
 };
+
+void drawChar(unsigned char ch, int x, int y, unsigned char attr)
+{
+	unsigned char *glyph = (unsigned char *)&font + (ch < FONT_NUMGLYPHS ? ch : 0) * FONT_BPG;
+
+	for (int i = 0; i < FONT_HEIGHT; i++)
+	{
+		for (int j = 0; j < FONT_WIDTH; j++)
+		{
+			unsigned char mask = 1 << j;
+			unsigned char col = (*glyph & mask) ? attr & 0x0f : (attr & 0xf0) >> 4;
+
+			drawPixel(x + j, y + i, col);
+		}
+		glyph += FONT_BPL;
+	}
+}
+
+void drawString(int x, int y, char *s, unsigned char attr)
+{
+	while (*s)
+	{
+		if (*s == '\r')
+		{
+			x = 0;
+		}
+		else if (*s == '\n')
+		{
+			x = 0;
+			y += FONT_HEIGHT;
+		}
+		else
+		{
+			drawChar(*s, x, y, attr);
+			x += FONT_WIDTH;
+		}
+		s++;
+	}
+}
