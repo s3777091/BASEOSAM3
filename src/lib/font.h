@@ -13,7 +13,4 @@ enum {
 extern unsigned int vgapal[];
 extern unsigned char font[FONT_NUMGLYPHS][FONT_BPG];
 
-void drawChar(unsigned char ch, int x, int y, unsigned char attr);
-void drawString(int x, int y, char *s, unsigned char attr);
-
 #endif // FONT_H
