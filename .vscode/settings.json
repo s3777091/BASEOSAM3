@@ -10,6 +10,8 @@
         "font.h": "c",
         "game.h": "c",
         "map.h": "c",
-        "image.h": "c"
-    }
+        "image.h": "c",
+        "imagedata.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
