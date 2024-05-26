@@ -418,10 +418,10 @@ void drawString(int x, int y, char *s, unsigned char attr)
 void drawOnScreen()
 {
 	int wid = 120;
-	drawString(SCR_WIDTH / 2 - 70, 200, "Team VIP PRO", 0xd);
+	drawString(SCR_WIDTH / 2 - 70, 200, "Group 15", 0xd);
 	drawLine(SCR_WIDTH / 2 - 80, 220, SCR_WIDTH / 2 + 80, 220, 0x0f);
 
-	drawString(SCR_WIDTH / 2 - wid, 250, "Coding:\tHuynh Dac Tan Dat", 0xa);
+	drawString(SCR_WIDTH / 2 - wid, 250, "Developed by:\tHuynh Dac Tan Dat", 0xa);
 	drawString(SCR_WIDTH / 2 - 50, 340, "$ s3777091 $", 0x05);
 
 	drawCircle(1024, 700, 250, 0x09, 0);
