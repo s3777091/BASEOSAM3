@@ -13,11 +13,11 @@ const unsigned long* image_epd_bitmap[] = {
 };
 
 const unsigned int image_width[] = {
-    1920
+    1024
 };
 
 const unsigned int image_height[] = {
-    1080
+    730
 };
 
 const unsigned long* frame_epd_bitmap[] = {
