@@ -1,41 +1,51 @@
 #include "./lib/game.h"
 
+// Init Global variables
 struct Snake snake;
 struct Teleport teleport;
 int currentMap = 0; // Track current map index
+int isRunning = 1;
 
+/*
+    Initialize the game
+*/
 void initializeGame() {
-    initializeMap(currentMap);
+    initializeMap(currentMap); // Load map
     wait_ms(5000);
-    snake.length = 3;
+    snake.length = 3;       // Init snake length
     snake.direction = LEFT; // Initial direction: left
     snake.onBrick = 0;
 
+    // Init snake body position
     for (int i = 0; i < snake.length; i++) {
         snake.body[i].x = map.start.x - i;
         snake.body[i].y = map.start.y;
     }
 }
 
+/*
+    Check if the move is valid
+    return 1 for true and 0 for false
+*/
 int isValidMove(int move) {
     int newX = snake.body[0].x;
     int newY = snake.body[0].y;
 
     switch (move) {
-    case LEFT:
-        newX--;
-        break;
-    case RIGHT:
-        newX++;
-        break;
-    case UP:
-        newY--;
-        break;
-    case DOWN:
-        newY++;
-        break;
-    default:
-        return 0; // Invalid move input
+        case LEFT:
+            newX--;
+            break;
+        case RIGHT:
+            newX++;
+            break;
+        case UP:
+            newY--;
+            break;
+        case DOWN:
+            newY++;
+            break;
+        default:
+            return 0; // Invalid move input
     }
 
     int isValid = 1;
@@ -54,6 +64,7 @@ int isValidMove(int move) {
         }
     }
 
+    // Check if snake hits itself
     for (int i = 1; i < snake.length; i++) {
         if (newX == snake.body[i].x && newY == snake.body[i].y) {
             uart_puts("Struggle! Snake hit itself!\n");
@@ -61,6 +72,7 @@ int isValidMove(int move) {
         }
     }
 
+    // Check if the snake eats apples
     for (int i = 0; i < MAX_APPLES; i++) {
         if (newX == map.apples[i].x && newY == map.apples[i].y) {
             snake.onBrick = 1;  // Snake is on an apple
@@ -128,6 +140,7 @@ int isValidMove(int move) {
         }
     }
 
+    // Make the move if it is valid
     if (isValid) {
         snake.direction = move;
     }
@@ -135,22 +148,27 @@ int isValidMove(int move) {
     return isValid;
 }
 
-
+/*
+    Convert character into specific directions
+*/ 
 int getDirection(char dir) {
     switch (dir) {
-    case 'a':
-        return LEFT;
-    case 'd':
-        return RIGHT;
-    case 'w':
-        return UP;
-    case 's':
-        return DOWN;
+        case 'a':
+            return LEFT;
+        case 'd':
+            return RIGHT;
+        case 'w':
+            return UP;
+        case 's':
+            return DOWN;
     }
 
-    return 0;
+    return -1;
 }
 
+/*
+    Move the snake to destinated position    
+*/
 void moveSnake() {
     // Move the snake in the current direction
     for (int i = snake.length - 1; i > 0; i--) {
@@ -173,10 +191,14 @@ void moveSnake() {
     }
 }
 
+/*
+
+*/
 void applyGravity() {
     while (1) {
         if (snake.body[0].y > BOUND_Y) {
             uart_puts("Game Over\n");
+            isRunning = 0;
             return;
         }
 
@@ -219,18 +241,12 @@ void applyGravity() {
         for (int i = 0; i < snake.length; i++) {
             snake.body[i].y += 1;
         }
-
-        wait_ms(100);
-        clearScreen(0x0);
-        drawSnake();
-        drawBricks();
-        drawTeleport();
-        drawFood();
-        drawRocks();
     }
 }
 
-
+/*
+    Check collision
+*/
 void checkCollision() {
     for (int i = 0; i < MAX_APPLES; i++) {
         if (snake.body[0].x == map.apples[i].x && snake.body[0].y == map.apples[i].y) {
@@ -323,9 +339,17 @@ void playGame() {
     wait_ms(5000);
     
 
-    while (1) {
+    while (1 && isRunning) {
         char c = uart_getc();
+
+        // Exit the game
+        if (c == 'q') {
+            isRunning = 0;
+            return;
+        }
+
         int direction = getDirection(c);
+
         if (isValidMove(direction)) {
             moveSnake();
         }
