@@ -333,7 +333,6 @@ void checkCollision() {
     }
 }
 
-
 void playGame() {
     initializeGame();
     wait_ms(5000);
@@ -346,6 +345,16 @@ void playGame() {
         if (c == 'q') {
             isRunning = 0;
             return;
+        }
+
+        // Reload the map
+        if (c == 'r') {
+            initializeMap(currentMap);
+            snake.length = 3;
+            for (int i = 0; i < snake.length; i++) {
+                snake.body[i].x = map.start.x - i;
+                snake.body[i].y = map.start.y;
+            }
         }
 
         int direction = getDirection(c);
