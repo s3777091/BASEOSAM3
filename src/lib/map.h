@@ -4,7 +4,7 @@
 #define MAX_APPLES 3
 #define MAX_ROCKS 3
 #define CELL_SIZE 32
-#define MAX_MAPS 10
+#define MAX_MAPS 40
 
 #include "game.h"
 

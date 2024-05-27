@@ -441,3 +441,15 @@ void drawOnScreen()
 	drawCircle(1024, 700, 250, 0x09, 0);
 	drawCircle(0, 0, 30, 0x69, 1);
 }
+
+void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            int srcX = j % 32;
+            int srcY = i % 32;
+            int srcIndex = srcY * 32 + srcX; // Calculate the index for the 1D array
+            int offs = ((y + i) * pitch) + ((x + j) * 4); // Calculate offset
+            *((unsigned int *)(fb + offs)) = image[srcIndex]; // Set pixel color
+        }
+    }
+}

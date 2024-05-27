@@ -344,7 +344,6 @@ void playGame() {
     initializeGame();
     wait_ms(5000);
     
-
     while (1 && isRunning) {
         char c = uart_getc();
 
@@ -369,9 +368,8 @@ void playGame() {
         if (isValidMove(direction)) {
             moveSnake();
         }
-        checkCollision();
         applyGravity();
-
+        checkCollision();
         MapReload();
     }
 }
