@@ -204,8 +204,6 @@ void applyGravity() {
             return;
         }
 
-        int isAbove = 0;
-
         for (int i = 0; i < snake.length; i++) {
             int x = snake.body[i].x;
             int y = snake.body[i].y + 1; // Check the position below the snake segment
@@ -214,30 +212,22 @@ void applyGravity() {
             for (int j = 0; j < MAX_BRICKS; j++) {
                 if (x >= map.bricks[j].x && x <= map.bricks[j].x + map.bricks[j].w - 1 &&
                     y == map.bricks[j].y) {
-                    isAbove = 1;
-                    break;
+                    return;
                 }
             }
-            if (isAbove) break;
 
             for (int j = 0; j < MAX_APPLES; j++) {
                 if (x == map.apples[j].x && y == map.apples[j].y) {
-                    isAbove = 1;
-                    break;
+                    return;
                 }
             }
-            if (isAbove) break;
 
             for (int j = 0; j < MAX_ROCKS; j++) {
                 if (x == map.rocks[j].x && y == map.rocks[j].y) {
-                    isAbove = 1;
-                    break;
+                    return;
                 }
             }
-            if (isAbove) break;
         }
-
-        if (isAbove) break; // Stop falling if snake is above any obstacle
 
         // Move the snake down by 1 cell
         for (int i = 0; i < snake.length; i++) {
