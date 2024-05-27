@@ -25,7 +25,5 @@
 void change_display(char c);
 void printImage(int x1, int y1, int image_pointer);
 void displayVideo();
-void display_keymap_bar();
-void displayInfo();
 
 void wait_msec(unsigned int n);
