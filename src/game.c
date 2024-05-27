@@ -15,6 +15,7 @@ void initializeGame() {
     snake.length = 3;       // Init snake length
     snake.direction = LEFT; // Initial direction: left
     snake.onBrick = 0;
+    isRunning = 1;
 
     // Init snake body position
     for (int i = 0; i < snake.length; i++) {
@@ -197,8 +198,9 @@ void moveSnake() {
 void applyGravity() {
     while (1) {
         if (snake.body[0].y > BOUND_Y) {
-            uart_puts("Game Over\n");
-            isRunning = 0;
+            uart_puts("\nGame Over\n");
+            uart_puts("Press R to restart\n");
+            uart_puts("Press Q to quit\n");
             return;
         }
 
@@ -318,20 +320,25 @@ void checkCollision() {
     }
 
     if (snake.body[0].x == map.teleport.x && snake.body[0].y == map.teleport.y) {
-        currentMap++;  // Advance to the next map
         uart_puts("Go to next map\n");
-        if (currentMap >= MAX_MAPS) {
-            currentMap = 0;  // Loop back to the first map
-        }
-        initializeMap(currentMap);  // Initialize the new map
-
-        snake.length = 3;
-        for (int i = 0; i < snake.length; i++) {
-            snake.body[i].x = map.start.x - i;
-            snake.body[i].y = map.start.y;
-        }
+        advanceToNextMap();
     }
 }
+
+void advanceToNextMap() {
+    currentMap++;  // Advance to the next map
+    if (currentMap >= MAX_MAPS) {
+        currentMap = 0;  // Loop back to the first map
+    }
+
+    initializeMap(currentMap);  // Initialize the new map
+    snake.length = 3;
+    for (int i = 0; i < snake.length; i++) {
+        snake.body[i].x = map.start.x - i;
+        snake.body[i].y = map.start.y;
+    }
+}
+
 
 void playGame() {
     initializeGame();
