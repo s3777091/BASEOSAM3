@@ -24,6 +24,7 @@ void main()
             case '3':
                 break;
             case '4':
+                displayVideo();
                 break;
             case '5':
                 playGame();

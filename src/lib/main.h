@@ -4,6 +4,7 @@
 #include "mbox.h"
 #include "framebf.h"
 #include "game.h"
+#include "screen.h"
 
 uart_config config = {
     .data_bits = 8,
