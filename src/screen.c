@@ -3,9 +3,9 @@
 #include "data/videodata.h"
 #include "lib/framebf.h"
 
-// frame resolution to display silde
+// frame resolution to display screen
 const int frame_width = MAX_DISPLAY_WIDTH;
-const int frame_height = 730;
+const int frame_height = 830;
 
 // Array of all bitmaps for convenience. 
 const unsigned long* image_epd_bitmap[] = {
@@ -17,7 +17,7 @@ const unsigned int image_width[] = {
 };
 
 const unsigned int image_height[] = {
-    730
+    830
 };
 
 const unsigned long* frame_epd_bitmap[] = {
