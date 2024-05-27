@@ -204,6 +204,11 @@ void applyGravity() {
             return;
         }
 
+        if (snake.body[0].x == map.teleport.x && snake.body[0].y == map.teleport.y) {
+            uart_puts("Go to next map\n");
+            advanceToNextMap();
+        }
+
         for (int i = 0; i < snake.length; i++) {
             int x = snake.body[i].x;
             int y = snake.body[i].y + 1; // Check the position below the snake segment
@@ -309,10 +314,7 @@ void checkCollision() {
         }
     }
 
-    if (snake.body[0].x == map.teleport.x && snake.body[0].y == map.teleport.y) {
-        uart_puts("Go to next map\n");
-        advanceToNextMap();
-    }
+    
 }
 
 void advanceToNextMap() {
