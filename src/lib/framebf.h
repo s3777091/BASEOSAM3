@@ -26,4 +26,3 @@ void drawChar(unsigned char ch, int x, int y, unsigned char attr);
 void drawString(int x, int y, char *s, unsigned char attr);
 void drawOnScreen();
 void drawPixelARGB32(int x, int y, unsigned int attr);
-void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height);
