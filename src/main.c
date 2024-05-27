@@ -18,19 +18,21 @@ void main()
         switch (c)
         {
             case '1':
+                displayMenu();
                 break;
             case '2':
+                change_display();
+                printImage();
                 break;
             case '3':
+                displayVideo();
                 break;
             case '4':
-                displayVideo();
+                drawOnScreen();
                 break;
             case '5':
                 playGame();
                 clearScreen(COLORS.BLACK);
-                displayMenu();
-                drawOnScreen();
                 break;
             case '0':
                 clearScreen(COLORS.BLACK);
