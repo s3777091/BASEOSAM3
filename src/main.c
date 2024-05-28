@@ -21,7 +21,7 @@ void main()
             displayMenu();
             break;
         case '2':
-            change_display(c);
+            scrollImage(c);
             break;
         case '3':
             displayVideo();
