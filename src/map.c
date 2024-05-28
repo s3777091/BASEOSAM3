@@ -133,7 +133,22 @@ void drawFood()
             int appleX = map.apples[i].x * CELL_SIZE;
             int appleY = map.apples[i].y * CELL_SIZE;
 
-            drawRect(appleX, appleY, appleX + CELL_SIZE, appleY + CELL_SIZE, 0x4, 1);
+            drawImageTiled(AppleImage, appleX, appleY, CELL_SIZE, CELL_SIZE);
+        }
+    }
+}
+
+// Function to draw the rocks
+void drawRocks()
+{
+    for (int i = 0; i < MAX_ROCKS; i++)
+    {
+        if (map.rocks[i].x != -1 && map.rocks[i].y != -1)
+        {
+            int rockX = map.rocks[i].x * CELL_SIZE;
+            int rockY = map.rocks[i].y * CELL_SIZE;
+
+            drawImageTiled(StoneImage, rockX, rockY, CELL_SIZE, CELL_SIZE);
         }
     }
 }
@@ -141,11 +156,7 @@ void drawFood()
 // Function to draw the teleport
 void drawTeleport()
 {
-    // Ensure the teleport is drawn using global map teleport coordinates
-    drawRect(map.teleport.x * CELL_SIZE,
-             map.teleport.y * CELL_SIZE,
-             (map.teleport.x + 1) * CELL_SIZE - 1,
-             (map.teleport.y + 1) * CELL_SIZE - 1, 0x3, 1);
+    drawImageTiled(TeleportImage, map.teleport.x * CELL_SIZE, map.teleport.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
 // Function to draw the bricks
@@ -160,19 +171,6 @@ void drawBricks()
     }
 }
 
-void drawRocks()
-{
-    for (int i = 0; i < MAX_ROCKS; i++)
-    {
-        if (map.rocks[i].x != -1 && map.rocks[i].y != -1)
-        {
-            int rockX = map.rocks[i].x * CELL_SIZE;
-            int rockY = map.rocks[i].y * CELL_SIZE;
-
-            drawRect(rockX, rockY, rockX + CELL_SIZE, rockY + CELL_SIZE, 0x7, 1); // Assuming 0x7 represents a color for rocks
-        }
-    }
-}
 
 void drawBackground(unsigned int *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw)
 {
