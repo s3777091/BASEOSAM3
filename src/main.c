@@ -21,8 +21,6 @@ void main()
             displayMenu();
             break;
         case '2':
-            printImage(0, 0, 0);
-            scrollImage(c);
             break;
         case '3':
             displayVideo();
