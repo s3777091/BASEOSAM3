@@ -1,6 +1,5 @@
 #ifndef SCREEN_H
 #define SCREEN_H
-#define image_arr_len 3
 #define frame_arr_len 32
 // default qemu display resolution
 #define MAX_DISPLAY_WIDTH 1024
@@ -24,7 +23,7 @@
 // #define TEAL    0xFF008080
 // #define NAVY    0xFF000080
 
-void change_display(char c);
+void scrollImage(char c);
 void printImage(int x1, int y1, int image_pointer);
 void displayVideo();
 
