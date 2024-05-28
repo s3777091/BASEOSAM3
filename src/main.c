@@ -19,7 +19,7 @@ void main() {
 
         switch (c) {
             case '1':
-                captureAndClear(c);
+                clearTerminal();
                 displayMenu();
                 break;
             case '2':
@@ -34,8 +34,7 @@ void main() {
             case '3':
                 captureAndClear(c);
                 // Display video
-                media_pointer = -1;
-                displayVideo();
+                playVideo();
                 break;
             case '4':
                 captureAndClear(c);
@@ -50,6 +49,7 @@ void main() {
                 break;
             case '0':
                 captureAndClear(c);
+                clearTerminal();
                 uart_puts("All cleared!");
                 break;
             case 'q':

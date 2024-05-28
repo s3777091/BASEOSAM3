@@ -29,3 +29,4 @@ void drawOnScreen();
 void drawPixelARGB32(int x, int y, unsigned int attr);
 void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height);
 void showGameMenu();
+void playVideo();

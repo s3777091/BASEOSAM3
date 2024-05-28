@@ -1,6 +1,6 @@
 // ----------------------------------- framebf.c -------------------------------------
 #include "./lib/framebf.h"
-
+#include "data/videodata.h"
 
 //Screen info
 unsigned int width, height, pitch;
@@ -487,12 +487,54 @@ void showGameMenu() {
     text_y += 30;
     drawString(text_x, text_y, "Using 'a' to go left", 0xa);
     text_y += 30;
-    drawString(text_x, text_y, "Press 'Q' to quit", 0xa);
+    drawString(text_x, text_y, "Press 'Q' two time to quit", 0xa);
     text_y += 30;
     drawString(text_x, text_y, "Press 'R' to reload map", 0xa);
 
 	drawCircle(1024, 700, 250, 0x09, 0);
 	drawCircle(0, 0, 30, 0x69, 1);
 
+}
+
+void playVideo() {
+    uart_puts("Playing video\n");
+    uart_puts("Press Enter to stop, Enter to play/resume, Q to quit\n");
+
+    int i = 0;
+    char c = 0;
+    int videoPaused = 0;
+
+    // Calculate center coordinates for the video
+    int videoWidth = 615;
+    int videoHeight = 480;
+
+    while (1) {
+        if (!(UART0_FR & UART0_FR_RXFE)) {
+            c = uart_getc();
+            if (c == '\n') {
+                videoPaused = !videoPaused; // Toggle play/pause
+                if (videoPaused) {
+                    uart_puts("\nVideo paused. Press Enter to play/resume.\n");
+                } else {
+                    uart_puts("\nVideo playing. Press Enter to stop/pause.\n");
+                }
+            } else if (c == 'Q' || c == 'q') {
+                uart_puts("\nQuitting video playback\n");
+                break;
+            }
+        }
+
+        if (!videoPaused) {
+            // Loop through video frames
+            if (i > 7)
+                i = 0;
+
+            drawImage(video_frames[i], 0, 0, videoWidth, videoHeight);
+            wait_ms(210000);
+            i++;
+        }
+    }
+
+    uart_puts("\nVideo stopped\n");
 }
 

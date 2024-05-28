@@ -35,15 +35,6 @@ struct Map all_maps[MAX_MAPS] = {
         {20, 14},
         {11, 12},
     },
-
-    {
-        {{10, 13, 7, 1}, {17, 13, 1, 2}, {17, 14, 3, 1}, {19, 10, 1, 4}, {19, 10, 3, 1}, {16, 10, 1, 2}, {16, 10, 2, 1}},
-        {{17, 11}},
-        {{-1, -1}},
-        {21, 9},
-        {12, 11},
-    },
-
     {
         {{10, 13, 2, 1}, {10, 14, 1, 2}, {10, 16, 5, 1}, {14, 14, 1, 2}, {13, 13, 2, 1}, {16, 13, 1, 1}}, // Bricks
         {{12, 15}},
@@ -170,7 +161,6 @@ void drawBricks()
         drawImageTiled(brickImage, temp.x * CELL_SIZE, temp.y * CELL_SIZE, brickWidth, brickHeight);
     }
 }
-
 
 void drawBackground(unsigned int *img, uint32_t char_x, uint32_t char_y, uint32_t widthDraw, uint32_t heightDraw)
 {

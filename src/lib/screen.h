@@ -8,11 +8,7 @@
 
 #define SCROLL_STEP 10
 
-void scrollImage(char c);
+void change_display(char c);
 void printImage(int x1, int y1, int image_pointer);
-void displayVideo();
-
-void wait_msec(unsigned int n);
-
 
 #endif // SCREEN_H
