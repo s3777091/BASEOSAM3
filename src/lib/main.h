@@ -14,6 +14,9 @@ uart_config config = {
     .baudrate = 115200
 };
 
+extern int media_pointer;
+extern int image_x;
+extern int image_y;
 
 struct Colors
 {

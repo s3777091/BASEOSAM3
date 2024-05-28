@@ -7,9 +7,9 @@
 const int frame_width = MAX_DISPLAY_WIDTH;
 const int frame_height = 830;
 
-// Array of all bitmaps for convenience. 
+// Array of all bitmaps for convenience.
 const unsigned long* image_epd_bitmap[] = {
-	epd_bitmap_image
+    epd_bitmap_image
 };
 
 const unsigned int image_width[] = {
@@ -21,7 +21,7 @@ const unsigned int image_height[] = {
 };
 
 const unsigned long* frame_epd_bitmap[] = {
-	epd_bitmap_frame[15]
+    epd_bitmap_frame[15]
 };
 
 const unsigned int video_width = 615;
@@ -44,31 +44,21 @@ void printImage(int image_x, int image_y, int media_pointer) {
             i++;
         }
 }
+
 void change_display(char c) {
-    
-    if (c == 's') {
-        if (media_pointer >= 0) {
+    if (media_pointer >= 0) {
+        if (c == 's') {
             image_y -= SCROLL_STEP;
             if (image_y < frame_height - image_height[media_pointer])
                 image_y = frame_height - image_height[media_pointer];
-            printImage(image_x, image_y, media_pointer);
-        }   
-    }
-    else if (c == 'w') {
-        if (media_pointer >= 0) {
+        } else if (c == 'w') {
             image_y += SCROLL_STEP;
             if (image_y > 0)
                 image_y = 0;
-            printImage(image_x, image_y, media_pointer);
-        }    
-    }
-    else if (c == 'r') {
-        if (media_pointer == -1) 
-            displayVideo();
+        }
+        printImage(image_x, image_y, media_pointer);
     }
 }
-
-
 
 void displayVideo() {
     int frame_pointer = 0;

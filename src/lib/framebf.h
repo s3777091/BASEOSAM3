@@ -18,6 +18,7 @@ void drawPixel(int x, int y, unsigned char attr);
 void drawRect(int x1, int y1, int x2, int y2, unsigned int attr, int fill);
 void drawLine(int x1, int y1, int x2, int y2, unsigned char attr);
 void drawCircle(int x0, int y0, int radius, unsigned char attr, int fill);
+void drawSquare(int x, int y, int size, unsigned char attr);
 
 void clearScreen(int color);
 
@@ -27,3 +28,4 @@ void drawString(int x, int y, char *s, unsigned char attr);
 void drawOnScreen();
 void drawPixelARGB32(int x, int y, unsigned int attr);
 void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int height);
+void showGameMenu();

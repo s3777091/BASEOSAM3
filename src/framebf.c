@@ -415,6 +415,13 @@ void drawString(int x, int y, char *s, unsigned char attr)
 	}
 }
 
+void drawSquare(int x, int y, int size, unsigned char attr) {
+    drawLine(x, y, x + size, y, attr);           // Top side
+    drawLine(x, y, x, y + size, attr);           // Left side
+    drawLine(x + size, y, x + size, y + size, attr); // Right side
+    drawLine(x, y + size, x + size, y + size, attr); // Bottom side
+}
+
 void drawOnScreen()
 {
 	int v_align = 120;
@@ -453,3 +460,39 @@ void drawImageTiled(unsigned int image[32*32], int x, int y, int width, int heig
         }
     }
 }
+
+void showGameMenu() {
+    int square_size = 500;
+    int square_x = (SCR_WIDTH - square_size) / 2;
+    int square_y = (SCR_HEIGHT - square_size) / 2;
+    drawSquare(square_x, square_y, square_size, 0x0F); // Draw a big square
+
+    int text_x = SCR_WIDTH / 2 - 150;
+    int text_y = SCR_HEIGHT / 2 - 100;
+
+    // Draw the welcome message
+    drawString(text_x, text_y, "WELCOME TO SNAKE WORM", 0xd);
+    text_y += 40;
+    drawString(text_x - 50, text_y, "Press any key to start the game", 0xa);
+    text_y += 60;
+
+    // Draw the instructions
+    drawString(text_x - 50, text_y, "Instructions:", 0xd);
+    text_y += 40;
+    drawString(text_x, text_y, "Using 's' to go down", 0xa);
+    text_y += 30;
+    drawString(text_x, text_y, "Using 'w' to go up", 0xa);
+    text_y += 30;
+    drawString(text_x, text_y, "Using 'd' to go right", 0xa);
+    text_y += 30;
+    drawString(text_x, text_y, "Using 'a' to go left", 0xa);
+    text_y += 30;
+    drawString(text_x, text_y, "Press 'Q' to quit", 0xa);
+    text_y += 30;
+    drawString(text_x, text_y, "Press 'R' to reload map", 0xa);
+
+	drawCircle(1024, 700, 250, 0x09, 0);
+	drawCircle(0, 0, 30, 0x69, 1);
+
+}
+
