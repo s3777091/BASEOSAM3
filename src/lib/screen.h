@@ -1,6 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
-#define frame_arr_len 32
+#define frame_arr_len 14
 // default qemu display resolution
 #define MAX_DISPLAY_WIDTH 1024
 #define MAX_DISPLAY_HEIGHT 768
