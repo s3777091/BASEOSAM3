@@ -27,7 +27,7 @@ const unsigned long* frame_epd_bitmap[] = {
 const unsigned int video_width = 615;
 const unsigned int video_height = 480;
 
-int media_pointer = 0; // default start with image no.0; media_pointer = -1 means displaying video
+int media_pointer = 0; 
 int image_x = 0;
 int image_y = 0;
 
