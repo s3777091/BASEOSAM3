@@ -27,7 +27,7 @@ const unsigned long* frame_epd_bitmap[] = {
 const unsigned int video_width = 615;
 const unsigned int video_height = 480;
 
-int media_pointer = 0; // default start with image no.0; media_pointer = -1 means displaying video
+int media_pointer = 0; 
 int image_x = 0;
 int image_y = 0;
 
@@ -44,7 +44,7 @@ void printImage(int image_x, int image_y, int media_pointer) {
             i++;
         }
 }
-void change_display(char c) {
+void scrollImage(char c) {
     
     if (c == 's') {
         if (media_pointer >= 0) {
@@ -61,10 +61,6 @@ void change_display(char c) {
                 image_y = 0;
             printImage(image_x, image_y, media_pointer);
         }    
-    }
-    else if (c == 'r') {
-        if (media_pointer == -1) 
-            displayVideo();
     }
 }
 
