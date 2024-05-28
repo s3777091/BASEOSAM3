@@ -17,30 +17,29 @@ void main()
 
         switch (c)
         {
-            case '1':
-                displayMenu();
-                break;
-            case '2':
-                change_display();
-                printImage();
-                break;
-            case '3':
-                displayVideo();
-                break;
-            case '4':
-                drawOnScreen();
-                break;
-            case '5':
-                playGame();
-                clearScreen(COLORS.BLACK);
-                break;
-            case '0':
-                clearScreen(COLORS.BLACK);
-                uart_puts("All cleared!");
-                break;
-            default:
-                uart_puts("Invalid command. Please try again");
-                break;
+        case '1':
+            displayMenu();
+            break;
+        case '2':
+            change_display(c);
+            break;
+        case '3':
+            displayVideo();
+            break;
+        case '4':
+            drawOnScreen();
+            break;
+        case '5':
+            playGame();
+            clearScreen(COLORS.BLACK);
+            break;
+        case '0':
+            clearScreen(COLORS.BLACK);
+            uart_puts("All cleared!");
+            break;
+        default:
+            uart_puts("Invalid command. Please try again");
+            break;
         }
     }
 }

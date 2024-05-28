@@ -1,3 +1,5 @@
+#ifndef SCREEN_H
+#define SCREEN_H
 #define image_arr_len 3
 #define frame_arr_len 32
 // default qemu display resolution
@@ -27,3 +29,6 @@ void printImage(int x1, int y1, int image_pointer);
 void displayVideo();
 
 void wait_msec(unsigned int n);
+
+
+#endif // SCREEN_H
