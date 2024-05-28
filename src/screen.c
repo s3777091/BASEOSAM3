@@ -72,17 +72,20 @@ void change_display(char c) {
 
 void displayVideo() {
     int frame_pointer = 0;
-                    
+
     while (frame_pointer < frame_arr_len) {
         int i = 0;
-        for (int y = 0; y < video_height; y++)
-            for (int x = 0; x < video_width; x++) {
-                if (x >= 0 && y >= 0 && x < frame_width && y < frame_height)
+        for (int y = 0; y < frame_height; y++) {
+            for (int x = 0; x < frame_width; x++) {
+                // Ensure you are within the bounds of the video dimensions
+                if (x >= 0 && y >= 0 && x < video_width && y < video_height) {
                     drawPixelARGB32(x, y, frame_epd_bitmap[frame_pointer][i]);
+                }
                 i++;
             }
+        }
         frame_pointer++;
-        wait_msec(70);
+        wait_msec(70); // Adjust the delay as needed
     }
 }
 
