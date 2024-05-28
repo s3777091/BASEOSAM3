@@ -6,10 +6,10 @@ void displayMenu()
     set_text_color("blue");
     uart_puts(
         "\n\n\tEnter a number to choose command:\n"
-        "\t1.\tDisplay an image\n"
-        "\t2.\tDisplay a video\n"
-        "\t3.\tDisplay team members\n"
-        "\t4.\tDisplay a video\n"
+        "\t1.\tDisplay menu\n"
+        "\t2.\tDisplay an image\n"
+        "\t3.\tDisplay a video\n"
+        "\t4.\tDisplay team members\n"
         "\t5.\tPlay game\n"
         "\t0.\tClear the screen\n");
     set_text_color("green");
