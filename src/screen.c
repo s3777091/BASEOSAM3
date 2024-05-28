@@ -23,6 +23,7 @@ int media_pointer = 0;
 int image_x = 0;
 int image_y = 0;
 
+//Function to display image
 void printImage(int image_x, int image_y, int media_pointer) {
     int i = 0;
     int w = image_width[media_pointer];
@@ -36,7 +37,7 @@ void printImage(int image_x, int image_y, int media_pointer) {
             i++;
         }
 }
-
+//Scrollable function for oversize image
 void change_display(char c) {
     if (media_pointer >= 0) {
         if (c == 's') {
